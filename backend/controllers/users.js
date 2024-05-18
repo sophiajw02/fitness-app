@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { db, auth } from '../config/firebaseConfig.js';
+import { db, auth, admin } from '../config/firebaseConfig.js';
 
 export const getAllUsers = async (req, res) => {
     try {
@@ -29,7 +29,7 @@ export const createUser = async (req, res) => {
     const user = req.body;
     const userId = uuidv4();
     try {
-        await db.collection('users').doc(userId).set({ ...user, id: userId });
+        await db.collection('users').doc(userId).set({ ...user, id: userId, created: admin.firestore.FieldValue.serverTimestamp()});
         res.send(`User with the name ${user.fullName} added to DB!`);
     } catch (error) {
         res.status(500).send('Error creating user: ' + error.message);

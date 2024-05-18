@@ -19,4 +19,4 @@ async function initializeFirebase() {
     auth = admin.auth();
 }
 
-export { initializeFirebase, db, auth };
+export { initializeFirebase, db, auth, admin };

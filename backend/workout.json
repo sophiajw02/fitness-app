@@ -1,0 +1,18 @@
+{
+    "workoutName" : "Workout",
+    "username": "jd123",
+    "exercises": [
+    {
+        "name" : "Bench",
+        "sets": 5,
+        "repetitions": 5,
+        "weight": 135
+    },
+
+    {
+        "name" : "Squat",
+        "sets": 5,
+        "repetitions": 5,
+        "weight": 135
+    }]
+}
