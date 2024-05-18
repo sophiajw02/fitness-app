@@ -1,43 +1,63 @@
 import { v4 as uuidv4 } from 'uuid';
+import { db, auth } from '../config/firebaseConfig.js';
 
-let users = []
+export const getAllUsers = async (req, res) => {
+    try {
+        const snapshot = await db.collection('users').get();
+        const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        res.send(users);
+    } catch (error) {
+        res.status(500).send('Error getting users: ' + error.message);
+    }
+};
 
-export const getAllUsers = (req, res) => {
-    res.send(users);
-}
-
-export const getUser = (req, res) => {
+export const getUser = async (req, res) => {
     const { id } = req.params;
-    
-    const foundUser = users.find((user) => user.id == id);
+    try {
+        const doc = await db.collection('users').doc(id).get();
+        if (!doc.exists) {
+            res.status(404).send('User not found');
+        } else {
+            res.send({ id: doc.id, ...doc.data() });
+        }
+    } catch (error) {
+        res.status(500).send('Error getting user: ' + error.message);
+    }
+};
 
-    res.send(foundUser);
-}
-
-export const createUser = (req, res) => {
+export const createUser = async (req, res) => {
     const user = req.body;
+    const userId = uuidv4();
+    try {
+        await db.collection('users').doc(userId).set({ ...user, id: userId });
+        res.send(`User with the name ${user.fullName} added to DB!`);
+    } catch (error) {
+        res.status(500).send('Error creating user: ' + error.message);
+    }
+};
 
-    users.push({ ...user, id: uuidv4() });
-
-    res.send(`User with the name ${user.fullName} added to DB!`);
-}
-
-export const updateUser = (req, res) => {
+export const updateUser = async (req, res) => {
     const { id } = req.params;
     const { fullName, username } = req.body;
+    try {
+        const userRef = db.collection('users').doc(id);
+        const updateData = {};
+        if (fullName) updateData.fullName = fullName;
+        if (username) updateData.username = username;
+        await userRef.update(updateData);
+        res.send(`User with the id ${id} has been updated`);
+    } catch (error) {
+        res.status(500).send('Error updating user: ' + error.message);
+    }
+};
 
-    const user = users.find((user) => user.id == id);
-
-    if(fullName) user.fullName = fullName;
-    if(username) user.username = username;
-
-    res.send(`User with the id ${id} has been updated`);
-}
-
-export const deleteUser = (req, res) => {
+// dont have a delete account button
+export const deleteUser = async (req, res) => {
     const { id } = req.params;
-    
-    users = users.filter((user) => user.id != id);
-
-    res.send(`User with the id ${id} deleted from the database.`);
-}
+    try {
+        await db.collection('users').doc(id).delete();
+        res.send(`User with the id ${id} deleted from the database.`);
+    } catch (error) {
+        res.status(500).send('Error deleting user: ' + error.message);
+    }
+};

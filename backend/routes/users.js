@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getAllUsers, getUser, createUser, updateUser } from '../controllers/users.js';
+import { getAllUsers, getUser, createUser, updateUser, deleteUser } from '../controllers/users.js';
 
 const router = express.Router();
 
@@ -14,6 +14,6 @@ router.post('/', createUser);
 router.patch('/:id', updateUser);
 
 // we might not need this due to our app not having a delete account button
-//router.delete('/:id', deleteUser);
+router.delete('/:id', deleteUser);
 
 export default router;
