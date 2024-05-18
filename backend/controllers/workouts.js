@@ -3,27 +3,29 @@ import { db, auth, admin } from '../config/firebaseConfig.js';
 
 export const getAllWorkouts = async (req, res) => {
     try {
-        const snapshot = await db.collection('workouts').get();
+        const {username} = req.params;
+        const snapshot = await db.collection('workouts').where('username' , '==', username).get();
         const workouts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         res.send(workouts);
     } catch (error) {
         res.status(500).send('Error getting workouts: ' + error.message);
+        
     }
 };
 
-export const getWorkout = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const doc = await db.collection('workouts').doc(id).get();
-        if (!doc.exists) {
-            res.status(404).send('User not found');
-        } else {
-            res.send({ id: doc.id, ...doc.data() });
-        }
-    } catch (error) {
-        res.status(500).send('Error getting workout: ' + error.message);
-    }
-};
+// export const getWorkout = async (req, res) => {
+//     const { id } = req.params;
+//     try {
+//         const doc = await db.collection('workouts').doc(id).get();
+//         if (!doc.exists) {
+//             res.status(404).send('User not found');
+//         } else {
+//             res.send({ id: doc.id, ...doc.data() });
+//         }
+//     } catch (error) {
+//         res.status(500).send('Error getting workout: ' + error.message);
+//     }
+// };
 
 export const createWorkout = async (req, res) => {
     const workout = req.body;

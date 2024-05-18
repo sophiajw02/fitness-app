@@ -1,13 +1,13 @@
 import express from 'express';
 
-import { getWorkout, getAllWorkouts, createWorkout, updateWorkout, deleteWorkout } from '../controllers/workouts.js';
+import { getAllWorkouts, createWorkout, updateWorkout, deleteWorkout } from '../controllers/workouts.js';
 
 const router = express.Router();
 
 // all routes in here are starting with /users
-router.get('/', getAllWorkouts);
+router.get('/:username', getAllWorkouts);
 
-router.get('/:id', getWorkout);
+// router.get('/:id', getWorkout);
 
 router.post('/', createWorkout);
 
