@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import React, { useState } from 'react';
 import { icons } from '../../constants';
 import FormField from '../../components/FormField';
@@ -15,7 +15,7 @@ const SignIn = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submitForm = () => {
-
+    router.replace('/home');
   }
 
   return (
