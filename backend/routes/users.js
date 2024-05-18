@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { getAllUsers, getUser, createUser, updateUser, deleteUser } from '../controllers/users.js';
+import { getAllUsers, getUser, createUser, userLogin, updateUser, deleteUser } from '../controllers/users.js';
 
 const router = express.Router();
 router.use(cors());
@@ -9,6 +9,8 @@ router.use(cors());
 router.get('/', getAllUsers);
 
 router.get('/:id', getUser);
+
+router.post('/login', userLogin);
 
 router.post('/', createUser);
 

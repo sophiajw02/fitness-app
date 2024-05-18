@@ -12,18 +12,13 @@ export const getAllUsers = async (req, res) => {
 };
 
 export const getUser = async (req, res) => {
-    const { username, password } = req.params;
+    const { id } = req.params;
     try {
-        const doc = await db.collection('users').doc(username).get();
+        const doc = await db.collection('users').doc(id).get();
         if (!doc.exists) {
             res.status(404).send('User not found');
         } else {
-            const userData = doc.data();
-            if (userData.password != password) {
-                res.status(401).send('Incorrect password');
-            } else {
-                res.send({ username: doc.username, ...userData });
-            }
+            res.send({ id: doc.id, ...doc.data() });
         }
     } catch (error) {
         res.status(500).send('Error getting user: ' + error.message);
@@ -40,6 +35,33 @@ export const createUser = async (req, res) => {
         res.status(500).send('Error creating user: ' + error.message);
     }
 };
+
+export const userLogin = async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+        const querySnapshot = await db.collection('users').where('username', '==', username).get();
+
+        if (querySnapshot.empty) {
+            return res.status(401).send('User not found');
+        }
+
+        const userDoc = querySnapshot.docs[0];
+        const userData = userDoc.data();
+
+        if (userData.password !== password) {
+            return res.status(401).send('Incorrect password');
+        }
+
+        // Assuming your user documents have an ID field
+        const userId = userDoc.id;
+
+        res.json({ userID: userId });
+    } catch (error) {
+        console.error('Error logging in:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
 
 export const updateUser = async (req, res) => {
     const { id } = req.params;
