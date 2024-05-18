@@ -14,10 +14,6 @@ app.use(bodyParser.json());
 
 app.use('/users', usersRoutes);
 
-app.get('/', (req, res) => {
-    res.send('Hello from Homepage.');
-});
-
 // Initialize Firebase and then start the server
 initializeFirebase().then(() => {
     app.listen(PORT, () => console.log(`Server running on port: http://localhost:${PORT}`));

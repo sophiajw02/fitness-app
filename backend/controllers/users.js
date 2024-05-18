@@ -12,13 +12,18 @@ export const getAllUsers = async (req, res) => {
 };
 
 export const getUser = async (req, res) => {
-    const { id } = req.params;
+    const { username, password } = req.params;
     try {
-        const doc = await db.collection('users').doc(id).get();
+        const doc = await db.collection('users').doc(username).get();
         if (!doc.exists) {
             res.status(404).send('User not found');
         } else {
-            res.send({ id: doc.id, ...doc.data() });
+            const userData = doc.data();
+            if (userData.password != password) {
+                res.status(401).send('Incorrect password');
+            } else {
+                res.send({ username: doc.username, ...userData });
+            }
         }
     } catch (error) {
         res.status(500).send('Error getting user: ' + error.message);
