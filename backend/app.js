@@ -1,5 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import admin from 'firebase-admin';
+//import serviceAccount from './firebaseConfig.json' assert { type: 'json'};
+import { promises as fs } from 'fs';
 
 import usersRoutes from './routes/users.js';
 
@@ -16,9 +19,11 @@ app.get('/', (req, res) => {
     res.send('Hello from Homepage.');
 });
 
-const admin = require('firebase-admin');
-const serviceAccount = require('./firebaseConfig.json');
+app.listen(PORT, () => console.log(`Server running on port: http://localhost:${PORT}`));
 
+const serviceAccount = JSON.parse(
+    await fs.readFile('./firebaseConfig.json', 'utf-8')
+ );
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
@@ -89,9 +94,8 @@ const testWorkout = {
         sets: 5
     }
 };
-
+/*
   addUser('John Adams', 'johnadams@gmail.com');
   addWorkout("johnadams@gmail.com", testWorkout);
   userSignUp("johnadams@gmail.com", "password123");
-
-  app.listen(PORT, () => console.log(`Server running on port: http://localhost:${PORT}`));
+  */
