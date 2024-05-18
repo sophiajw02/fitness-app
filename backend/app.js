@@ -1,3 +1,21 @@
+import express from 'express';
+import bodyParser from 'body-parser';
+
+import usersRoutes from './routes/users.js';
+
+const app = express();
+const PORT = 5050;
+
+app.use(bodyParser.json());
+
+app.use('/users', usersRoutes);
+
+app.get('/', (req, res) => {
+    console.log('[TEST]!');
+    
+    res.send('Hello from Homepage.');
+});
+
 const admin = require('firebase-admin');
 const serviceAccount = require('./firebaseConfig.json');
 
@@ -75,3 +93,5 @@ const testWorkout = {
   addUser('John Adams', 'johnadams@gmail.com');
   addWorkout("johnadams@gmail.com", testWorkout);
   userSignUp("johnadams@gmail.com", "password123");
+
+  app.listen(PORT, () => console.log(`Server running on port: http://localhost:${PORT}`));
