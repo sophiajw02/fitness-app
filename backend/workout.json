@@ -1,6 +1,7 @@
 {
     "workoutName" : "Workout",
     "username": "jd123",
+    "userid" : "123",
     "exercises": [
     {
         "name" : "Bench",

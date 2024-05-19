@@ -1,11 +1,13 @@
 import express from 'express';
+import cors from 'cors';
 
 import { getAllWorkouts, createWorkout, updateWorkout, deleteWorkout } from '../controllers/workouts.js';
 
 const router = express.Router();
+router.use(cors());
 
 // all routes in here are starting with /users
-router.get('/:username', getAllWorkouts);
+router.get('/:userid', getAllWorkouts);
 
 // router.get('/:id', getWorkout);
 

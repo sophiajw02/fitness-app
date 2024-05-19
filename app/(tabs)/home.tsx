@@ -13,20 +13,6 @@ const Home = () => {
   const [workouts, setWorkouts] = useState([]);
   const [userId, setUserId] = useState(null);
 
-  // useEffect(() => {
-    const fetchWorkouts = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5050/workouts/${username}`);
-        setWorkouts(response.data);
-        console.log('Successfully fetched workouts:', workouts);
-      } catch (error) {
-        console.error('Error fetching workouts:', error);
-      } finally {
-      }
-    };
-
-  //   fetchWorkouts();
-  // }, []);
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -43,7 +29,7 @@ const Home = () => {
 
     const fetchWorkouts = async () => {
       try {
-        const response = await axios.get(`http://localhost:5050/workouts/ac123`);
+        const response = await axios.get(`http://localhost:5050/workouts/123`);
         setWorkouts(response.data);
         console.log('Successfully fetched workouts:', response.data);
       } catch (error) {
@@ -52,6 +38,7 @@ const Home = () => {
     };
   
     fetchUserId();
+    fetchWorkouts();
   }, []);
 
   const [routines, setRoutines] = useState([

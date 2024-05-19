@@ -67,7 +67,7 @@ const RoutineCard = ({ title, exercises, containerStyle, id, onDelete }) => {
                             <View style={styles.routineContext}>
                                 <Text style={styles.heading}>Exercise: {exercise.name}</Text>
                                 <View style={styles.routineReps}>
-                                    <Text style={styles.paragraph}>{exercise.reps} Reps</Text>
+                                    <Text style={styles.paragraph}>{exercise.repetitions} Reps</Text>
                                     <Text style={styles.divider}>|</Text>
                                     <Text style={styles.paragraph}>{exercise.sets} Sets</Text>
                                     <Text style={styles.divider}>|</Text>

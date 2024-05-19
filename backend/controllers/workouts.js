@@ -3,8 +3,8 @@ import { db, auth, admin } from '../config/firebaseConfig.js';
 
 export const getAllWorkouts = async (req, res) => {
     try {
-        const {username} = req.params;
-        const snapshot = await db.collection('workouts').where('username' , '==', username).get();
+        const {userid} = req.params;
+        const snapshot = await db.collection('workouts').where('userid' , '==', userid).get();
         const workouts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         res.send(workouts);
     } catch (error) {
