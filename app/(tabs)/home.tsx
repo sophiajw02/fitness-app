@@ -2,26 +2,30 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView }
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { icons } from '../../constants';
 import RoutineCard from '../../components/RoutineCard';
-import { Link, router, useNavigation } from 'expo-router';
+import { 
+  useNavigation } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useRoute } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
+  const navigation = useNavigation();
   const [workouts, setWorkouts] = useState([]);
   const [userId, setUserId] = useState(null);
-
+  const [fullName, setFullName] = useState(null);
 
   useEffect(() => {
     const fetchUserId = async () => {
       try {
         const storedUserId = await AsyncStorage.getItem('userId');
-        if (storedUserId !== null) {
+        const storedFullName = await AsyncStorage.getItem('fullName');
+        if (storedUserId !== null && storedUserId !== null) {
           setUserId(storedUserId);
+          setFullName(storedFullName);
         }
         console.log('Stored userId:', storedUserId);
+        console.log('Stored name:', storedFullName);
       } catch (error) {
         console.error('Error fetching userId:', error);
       }
@@ -36,7 +40,7 @@ const Home = () => {
         console.error('Error fetching workouts:', error);
       }
     };
-  
+
     fetchUserId();
     fetchWorkouts();
   }, []);
@@ -57,7 +61,7 @@ const Home = () => {
         <View style={styles.header}>
           <View>
             <Text style={styles.paragraph}>Welcome Back</Text>
-            <Text style={styles.heading}>{userId}</Text>
+            <Text style={styles.heading}>{fullName}</Text>
           </View>
           <View>
             <TouchableOpacity onPress={() => navigation.navigate('add-routine')}>
@@ -76,7 +80,7 @@ const Home = () => {
         renderItem={({ item }) => (
           <RoutineCard title={item.workoutName}
             exercises={item.exercises}
-          onDelete={handleDeleteRoutine}/>
+            onDelete={handleDeleteRoutine}/>
         )}
 
       />

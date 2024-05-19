@@ -3,10 +3,10 @@ import { icons } from '../constants';
 import { Swipeable } from 'react-native-gesture-handler';
 import Collapsible from 'react-native-collapsible';
 import React, { useState, useRef } from 'react';
+import ExerciseCard from './ExerciseCard';
 import axios from 'axios';
 
 const RoutineCard = ({ title, exercises, containerStyle, id, onDelete }) => {
-    const [complete, setComplete] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [deleteButtonVisible, setDeleteButtonVisible] = useState(false);
     const swipeableRef = useRef(null);
@@ -52,32 +52,36 @@ const RoutineCard = ({ title, exercises, containerStyle, id, onDelete }) => {
                     style={styles.toggleArrow}
                     tintColor='white'/>
             </TouchableOpacity>
-            <Collapsible collapsed={isCollapsed} style={styles.collapsible}>
-                <View style={styles.cardContainer}>
-                    {exercises.map((exercise, index) => (
-                        <TouchableOpacity
-                            key={index}
-                            onPress={() => setComplete(!complete)}
-                        >
-                            <Image source={!complete ? icons.radioUnchecked : icons.radioChecked}
-                                tintColor={!complete ? '#EAEAEA' : '#2B993C'}
-                                resizeMode='contain'
-                                style={styles.image}
-                            />
-                            <View style={styles.routineContext}>
-                                <Text style={styles.heading}>Exercise: {exercise.name}</Text>
-                                <View style={styles.routineReps}>
-                                    <Text style={styles.paragraph}>{exercise.repetitions} Reps</Text>
-                                    <Text style={styles.divider}>|</Text>
-                                    <Text style={styles.paragraph}>{exercise.sets} Sets</Text>
-                                    <Text style={styles.divider}>|</Text>
-                                    <Text style={styles.paragraph}>{exercise.weight} Pounds</Text>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
-                    ))}
-                </View>
+            <Collapsible collapsed={isCollapsed}
+                style={styles.collapse}
+            >
+                {exercises.map((exercise, index) => (
+                    <ExerciseCard exercise={exercise}/>
+                // <View style={styles.cardContainer}>
+                //         <TouchableOpacity
+                //             key={index}
+                //             onPress={() => setComplete(!complete)}
+                //         >
+                //             <Image source={!complete ? icons.radioUnchecked : icons.radioChecked}
+                //                 tintColor={!complete ? '#EAEAEA' : '#2B993C'}
+                //                 resizeMode='contain'
+                //                 style={styles.image}
+                //             />
+                //             <View style={styles.routineContext}>
+                //                 <Text style={styles.heading}>Exercise: {exercise.name}</Text>
+                //                 <View style={styles.routineReps}>
+                //                     <Text style={styles.paragraph}>{exercise.repetitions} Reps</Text>
+                //                     <Text style={styles.divider}>|</Text>
+                //                     <Text style={styles.paragraph}>{exercise.sets} Sets</Text>
+                //                     <Text style={styles.divider}>|</Text>
+                //                     <Text style={styles.paragraph}>{exercise.weight} Pounds</Text>
+                //                 </View>
+                //             </View>
+                //         </TouchableOpacity>
+                // </View>
+                ))}
             </Collapsible>
+
         </View>
         </Swipeable>
 
@@ -97,20 +101,24 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         paddingHorizontal: 24,
     },
-    cardContainer: {
-        width: '90%',
-        display: 'flex',
-        flexDirection: 'row',
+    collapse: {
+        flexDirection: 'column',
         alignItems: 'center',
-        marginTop: 4,
-        paddingBottom: 4,
-        borderBottomWidth: 1,
-        borderBottomColor: 'rgba(0,0,0,0.3)',
     },
-    collapsible: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
+    // cardContainer: {
+    //     width: '90%',
+    //     display: 'flex',
+    //     flexDirection: 'row',
+    //     alignItems: 'center',
+    //     marginTop: 4,
+    //     paddingBottom: 4,
+    //     borderBottomWidth: 1,
+    //     borderBottomColor: 'rgba(0,0,0,0.3)',
+    // },
+    exerciseContainer: {
+        display: 'none',
+        paddingVertical: 4,
+        paddingHorizontal: 16,
     },
     image: {
         width: 40,
@@ -145,10 +153,7 @@ const styles = StyleSheet.create({
         marginRight: 5,
         fontWeight: 'bold',
     },
-    exerciseContainer: {
-        paddingVertical: 4,
-        paddingHorizontal: 16,
-    },
+
     collapseButtonText: {
         color: 'white',
         fontSize: 20,
