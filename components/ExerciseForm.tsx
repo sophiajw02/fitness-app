@@ -22,11 +22,11 @@ const ExerciseForm = () => {
         <View>
             <TouchableOpacity onPress={toggleCollapse} style={styles.collapseButton}>
                 <Text style={styles.collapseButtonText}>
-                  {isCollapsed ? 'Show Exercises' : 'Hide Exercises'}
+                  {isCollapsed ? 'Show Exercise' : 'Hide Exercise'}
                 </Text>
                 <Image source={isCollapsed ? icons.arrowUp : icons.arrowDown}
                     style={styles.toggleArrow}
-                    tintColor='white'/>
+                    tintColor='black'/>
             </TouchableOpacity>
             <Collapsible collapsed={isCollapsed}>
               <View style={styles.exerciseContainer}>
@@ -61,19 +61,20 @@ export default ExerciseForm;
 const styles = StyleSheet.create({
     exerciseContainer: {
       paddingVertical: 4,
+      paddingHorizontal: 16,
     },
     collapseButton: {
         margin: 8,
         padding: 4,
         alignItems: 'center',
-        backgroundColor: '#2D95F3',
-        borderRadius: 8,
         flexDirection: 'row',
         justifyContent: 'center',
-        marginHorizontal: 64,
+        marginHorizontal: 24,
+        borderTopWidth: 2,
+        borderTopColor: 'rgba(65, 110, 151, 0.3)',
     },
     collapseButtonText: {
-        color: 'white',
+        color: 'black',
         fontSize: 18,
     },
     toggleArrow: {
