@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { icons } from '../../constants';
-import { Link, router, useNavigation } from 'expo-router';
-import RoutineCard from '@/components/RoutineCard';
+import { useNavigation } from 'expo-router';
+import RoutineCard from '../../components/RoutineCard';
 import React from 'react';
 
 const Home = () => {

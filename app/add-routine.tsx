@@ -1,7 +1,6 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from 'expo-router';
-import Collapsible from 'react-native-collapsible';
 import { icons } from '../constants';
 import FormField from '../components/FormField';
 import CustomButton from '../components/CustomButton';
@@ -15,11 +14,6 @@ const AddRoutine = () => {
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(true);
-
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  }
 
   const submitForm = async () => {
 
@@ -38,29 +32,30 @@ const AddRoutine = () => {
         </TouchableOpacity>
         <Text style={styles.heading}>Add a New Routine</Text>
       </View>
-      <View>
-        <FormField
-          title="Routine Name"
-          value={form.routineName}
-          handleChangeText={(e) => setForm({...form, routineName: e})}
-          otherStyles={{marginVertical: 8}}
-        />
-      </View>
 
-      <ExerciseForm />
-      <ExerciseForm />
-      <ExerciseForm />
-      <ExerciseForm />
-      <ExerciseForm />
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View>
+          <FormField
+            title="Routine Name"
+            value={form.routineName}
+            handleChangeText={(e) => setForm({...form, routineName: e})}
+            otherStyles={{marginVertical: 8}}
+          />
+        </View>
 
-      <View >
-        <CustomButton
-          title="Add Routine"
-          handlePress={submitForm}
-          isLoading={isSubmitting}
-          containerStyles={styles.submitButton}
-        />
-      </View>
+        <ExerciseForm />
+        <ExerciseForm />
+        <ExerciseForm />
+        <ExerciseForm />
+        <ExerciseForm />
+      </ScrollView>
+
+      <CustomButton
+        title="Add Routine"
+        handlePress={submitForm}
+        isLoading={isSubmitting}
+        containerStyles={styles.submitButton}
+      />
     </SafeAreaView>
   )
 }
@@ -69,9 +64,13 @@ export default AddRoutine;
 
 const styles = StyleSheet.create({
   mainContainer: {
+    flex: 1,
     backgroundColor: 'white',
     height: '100%',
     paddingHorizontal: 24,
+  },
+  scrollContainer: {
+    paddingBottom: 100, 
   },
   image: {
     width: 32,
@@ -94,6 +93,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   submitButton: {
-
+    position: 'absolute',
+    bottom: 30,
+    left: 0,
+    right: 0,
+    marginHorizontal: 24,
   },
 })
