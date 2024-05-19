@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from 'expo-router';
@@ -5,18 +6,48 @@ import { icons } from '../constants';
 import FormField from '../components/FormField';
 import CustomButton from '../components/CustomButton';
 import ExerciseForm from '../components/ExerciseForm';
-import React, { useState } from 'react';
+import axios from 'axios';
 
 const AddRoutine = () => {
   const navigation = useNavigation();
   const [form, setForm] = useState({
     routineName: '',
-  })
+  });
+
+  const [exerciseData, setExerciseData] = useState([
+    { name: '', sets: '', repetitions: '', weight: '' },
+    { name: '', sets: '', repetitions: '', weight: '' },
+    { name: '', sets: '', repetitions: '', weight: '' },
+    { name: '', sets: '', repetitions: '', weight: '' },
+    { name: '', sets: '', repetitions: '', weight: '' }
+  ]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submitForm = async () => {
+    const workout = {
+      workoutName: form.routineName,
+      username: 'ac123',
+      userid: '45',
+      exercises: exerciseData.map(ex => ({
+        name: ex.name,
+        sets: parseInt(ex.sets),
+        repetitions: parseInt(ex.repetitions),
+        weight: parseInt(ex.weight)
+      }))
+    };
 
+    setIsSubmitting(true);
+
+    try {
+      console.log(workout);
+      const response = await axios.post(`http://localhost:5050/workouts/`, workout);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -38,16 +69,19 @@ const AddRoutine = () => {
           <FormField
             title="Routine Name"
             value={form.routineName}
-            handleChangeText={(e) => setForm({...form, routineName: e})}
-            otherStyles={{marginVertical: 8}}
+            handleChangeText={(e) => setForm({ ...form, routineName: e })}
+            otherStyles={{ marginVertical: 8 }}
           />
         </View>
 
-        <ExerciseForm />
-        <ExerciseForm />
-        <ExerciseForm />
-        <ExerciseForm />
-        <ExerciseForm />
+        {exerciseData.map((exercise, index) => (
+          <ExerciseForm
+            key={index}
+            exerciseData={exerciseData}
+            setExerciseData={setExerciseData}
+            index={index}
+          />
+        ))}
       </ScrollView>
 
       <CustomButton

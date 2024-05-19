@@ -1,21 +1,20 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import FormField from '../components/FormField';
-import React, { useState } from 'react';
 import { icons } from '../constants';
 
-const ExerciseForm = () => {
-    const [form, setForm] = useState({
-        routineName: '',
-        exercise: '',
-        reps: '',
-        sets: '',
-    })
-
+const ExerciseForm = ({ exerciseData, setExerciseData, index }) => {
     const [isCollapsed, setIsCollapsed] = useState(true);
 
     const toggleCollapse = () => {
       setIsCollapsed(!isCollapsed);
+    }
+
+    const handleChange = (field, value) => {
+      const updatedExerciseData = [...exerciseData];
+      updatedExerciseData[index][field] = value;
+      setExerciseData(updatedExerciseData);
     }
 
     return (
@@ -32,21 +31,28 @@ const ExerciseForm = () => {
               <View style={styles.exerciseContainer}>
                 <FormField
                   title="Exercise"
-                  value={form.exercise}
-                  handleChangeText={(e) => setForm({...form, exercise: e})}
+                  value={exerciseData[index].name}
+                  handleChangeText={(e) => handleChange('name', e)}
                   otherStyles={{marginVertical: 8}}
                 />
                 <FormField
                   title="Number of Sets"
-                  value={form.sets}
-                  handleChangeText={(e) => setForm({...form, sets: e})}
+                  value={exerciseData[index].sets.toString()}
+                  handleChangeText={(e) => handleChange('sets', e)}
                   otherStyles={{marginVertical: 8}}
                   keyboardType="numeric"
                 />
                 <FormField
                   title="Number of Repetitions"
-                  value={form.reps}
-                  handleChangeText={(e) => setForm({...form, reps: e})}
+                  value={exerciseData[index].repetitions.toString()}
+                  handleChangeText={(e) => handleChange('repetitions', e)}
+                  otherStyles={{marginVertical: 8}}
+                  keyboardType="numeric"
+                />
+                <FormField
+                  title="Weight"
+                  value={exerciseData[index].weight.toString()}
+                  handleChangeText={(e) => handleChange('weight', e)}
                   otherStyles={{marginVertical: 8}}
                   keyboardType="numeric"
                 />
@@ -81,4 +87,4 @@ const styles = StyleSheet.create({
         width: 32,
         height: 32,
     }
-  })
+})

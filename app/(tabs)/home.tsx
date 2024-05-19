@@ -29,7 +29,7 @@ const Home = () => {
 
     const fetchWorkouts = async () => {
       try {
-        const response = await axios.get(`http://localhost:5050/workouts/123`);
+        const response = await axios.get(`http://localhost:5050/workouts/45`);
         setWorkouts(response.data);
         console.log('Successfully fetched workouts:', response.data);
       } catch (error) {
