@@ -6,7 +6,7 @@ import axios from 'axios';
 import { icons } from '../../constants';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignIn = () => {
   const [form, setForm] = useState({
@@ -27,8 +27,9 @@ const SignIn = () => {
 
     try {
       const response = await axios.post('http://localhost:5050/users/login', form);
-      router.replace(`/home?username=${form.username}`);
-      Alert.alert('Success', `User with the name ${form.fullName} and username ${form.username} added to DB!`);
+      const userId = response.data.userID;
+      await AsyncStorage.setItem('userId', userId);
+      router.replace(`/home`);
     } catch (error) {
       Alert.alert('Error', error.message);
       console.error(error);
