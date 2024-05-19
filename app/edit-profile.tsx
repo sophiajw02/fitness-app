@@ -18,6 +18,8 @@ const EditProfile = () => {
     });
 
     const [userId, setUserId] = useState(null);
+    const [fullName, setFullName] = useState(null);
+    const [username, setUsername] = useState(null);
     const [profileImage, setProfileImage] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -45,10 +47,17 @@ const EditProfile = () => {
         const fetchUser = async () => {
           try {
             const storedUserId = await AsyncStorage.getItem('userId');
+            const storedFullName = await AsyncStorage.getItem('fullName');
+            const storedUsername = await AsyncStorage.getItem('username');
             if (storedUserId !== null) {
-              setUserId(storedUserId);
-            }
-            
+                setUserId(storedUserId);
+              }
+              if (storedUsername !== null) {
+                setUsername(storedUsername);
+              }
+              if (storedFullName !== null) {
+                setFullName(storedFullName);
+              }
           } catch (error) {
             console.error('Error fetching userId:', error);
           }
@@ -101,14 +110,14 @@ const EditProfile = () => {
                 <FormField
                     title="Name"
                     value={form.fullName}
-                    placeholder="This should be the user's current name"
+                    placeholder={fullName}
                     handleChangeText={(e) => setForm({ ...form, fullName: e })}
                     otherStyles={{ marginVertical: 8 }}
                 />
                 <FormField
                     title="Username"
                     value={form.username}
-                    placeholder="This should be the user's current username"
+                    placeholder={username}
                     handleChangeText={(e) => setForm({ ...form, username: e })}
                     otherStyles={{ marginVertical: 8 }}
                 />
