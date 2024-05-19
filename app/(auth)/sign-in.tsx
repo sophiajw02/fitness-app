@@ -29,6 +29,10 @@ const SignIn = () => {
       const response = await axios.post('http://localhost:5050/users/login', form);
       const userId = response.data.userID;
       await AsyncStorage.setItem('userId', userId);
+      const userDetails = await axios.get(`http://localhost:5050/users/${userId}`);
+      await AsyncStorage.setItem('email', userDetails.data.email);
+      await AsyncStorage.setItem('username', userDetails.data.username);
+      await AsyncStorage.setItem('fullName', userDetails.data.fullName);
       router.replace(`/home`);
     } catch (error) {
       Alert.alert('Error', error.message);

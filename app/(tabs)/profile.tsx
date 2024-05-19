@@ -1,12 +1,42 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { icons }  from '../../constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = () => {
   const navigation = useNavigation();
 
+  const [email, setEmail] = useState(null);
+  const [fullName, setFullName] = useState(null);
+  const [username, setUsername] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const storedEmail = await AsyncStorage.getItem('email');
+        if (storedEmail !== null) {
+          setEmail(storedEmail);
+        }
+        const storedUsername = await AsyncStorage.getItem('username');
+        if (storedUsername !== null) {
+          setUsername(storedUsername);
+        }
+        const storedFullName = await AsyncStorage.getItem('fullName');
+        if (storedFullName !== null) {
+          setFullName(storedFullName);
+        }
+
+        console.log('Stored userId:', storedEmail);
+        console.log('Stored name:', storedFullName);
+      } catch (error) {
+        console.error('Error fetching userId:', error);
+      }
+    };
+
+    fetchUser();
+  }, []);
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.circle} />
@@ -24,20 +54,16 @@ const Profile = () => {
       <View>
         <Image source={icons.profile}
           style={styles.profilePicture}/>
-        <Text style={styles.name}>User Name</Text>
+        <Text style={styles.name}>{fullName}</Text>
       </View>
       <View style={styles.profileInfo}>
         <View style={styles.profileSections}>
           <Text style={styles.infoTitle}>Email</Text>
-          <Text style={styles.infoText}>xxx@xxx.com</Text>
+          <Text style={styles.infoText}>{email}</Text>
         </View>
         <View style={styles.profileSections}>
           <Text style={styles.infoTitle}>Username</Text>
-          <Text style={styles.infoText}>xxxx</Text>
-        </View>
-        <View style={styles.profileSections}>
-          <Text style={styles.infoTitle}>Registered</Text>
-          <Text style={styles.infoText}>XXX XX, XXXX</Text>
+          <Text style={styles.infoText}>{username}</Text>
         </View>
       </View>
     </SafeAreaView>
