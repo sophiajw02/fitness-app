@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link, router } from 'expo-router';
 import React, { useState } from 'react';
+import axios from 'axios';
 import { icons } from '../../constants';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
@@ -14,8 +15,23 @@ const SignIn = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submitForm = () => {
-    router.replace('/home');
+  const submitForm = async () => {
+    if (!form.username || !form.password) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // const response = await axios.post('http://localhost:5050/users/logins', form);
+      router.replace('/home');
+    } catch (error) {
+      Alert.alert('Error', error.message);
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
