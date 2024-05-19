@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,  useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from 'expo-router';
@@ -7,9 +7,45 @@ import FormField from '../components/FormField';
 import CustomButton from '../components/CustomButton';
 import ExerciseForm from '../components/ExerciseForm';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const AddRoutine = () => {
   const navigation = useNavigation();
+  const [userId, setUserId] = useState(null);
+  const [username, setUsername] = useState(null);
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem('userId');
+        if (storedUserId !== null) {
+          setUserId(storedUserId);
+        }
+        console.log('Stored userId:', storedUserId);
+      } catch (error) {
+        console.error('Error fetching userId:', error);
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
+  useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        const storedUsername = await AsyncStorage.getItem('username');
+        if (storedUsername !== null) {
+          setUsername(storedUsername);
+        }
+        console.log('Stored username:', storedUsername);
+      } catch (error) {
+        console.error('Error fetching username:', error);
+      }
+    };
+    fetchUsername();
+  }, []);
+  
   const [form, setForm] = useState({
     routineName: '',
   });
@@ -27,8 +63,8 @@ const AddRoutine = () => {
   const submitForm = async () => {
     const workout = {
       workoutName: form.routineName,
-      username: 'ac123',
-      userid: '45',
+      username: username,
+      userid: userId,
       exercises: exerciseData.map(ex => ({
         name: ex.name,
         sets: parseInt(ex.sets),

@@ -1,19 +1,17 @@
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { icons } from '../../constants';
 import RoutineCard from '../../components/RoutineCard';
-import { Link, router, useNavigation } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useRoute } from '@react-navigation/native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
   const [workouts, setWorkouts] = useState([]);
   const [userId, setUserId] = useState(null);
-
-
+  
   useEffect(() => {
     const fetchUserId = async () => {
       try {
@@ -27,25 +25,24 @@ const Home = () => {
       }
     };
 
+    fetchUserId();
+  }, []);
+
+  useEffect(() => {
     const fetchWorkouts = async () => {
+      if (!userId) return;
       try {
-        const response = await axios.get(`http://localhost:5050/workouts/45`);
+        console.log('Fetching workouts for userId:', userId);
+        const response = await axios.get(`http://localhost:5050/workouts/${userId}`);
         setWorkouts(response.data);
         console.log('Successfully fetched workouts:', response.data);
       } catch (error) {
         console.error('Error fetching workouts:', error);
       }
     };
-  
-    fetchUserId();
-    fetchWorkouts();
-  }, []);
 
-  const [routines, setRoutines] = useState([
-    { id: 1, title: 'Routine 1' },
-    { id: 2, title: 'Routine 2' },
-    { id: 3, title: 'Routine 3' },
-  ]);
+    fetchWorkouts();
+  }, [userId]);
 
   const handleDeleteRoutine = (id) => {
     setRoutines(routines.filter((routine) => routine.id !== id));
@@ -53,7 +50,7 @@ const Home = () => {
 
   return (
     <GestureHandlerRootView>
-    <SafeAreaView style={styles.mainContainer}>
+      <SafeAreaView style={styles.mainContainer}>
         <View style={styles.header}>
           <View>
             <Text style={styles.paragraph}>Welcome Back</Text>
@@ -69,21 +66,22 @@ const Home = () => {
             </TouchableOpacity>
           </View>
         </View>
-      <FlatList
-        contentContainerStyle={styles.contentContainer}
-        data={workouts}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <RoutineCard title={item.workoutName}
-            exercises={item.exercises}
-          onDelete={handleDeleteRoutine}/>
-        )}
-
-      />
-    </SafeAreaView>
+        <FlatList
+          contentContainerStyle={styles.contentContainer}
+          data={workouts}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <RoutineCard 
+              title={item.workoutName}
+              exercises={item.exercises}
+              onDelete={handleDeleteRoutine}
+            />
+          )}
+        />
+      </SafeAreaView>
     </GestureHandlerRootView>
-  )
-}
+  );
+};
 
 export default Home;
 
