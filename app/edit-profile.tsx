@@ -78,9 +78,9 @@ const EditProfile = () => {
           const response = await axios.patch(`http://localhost:5050/users/${userId}`, form);
           console.log(userId);
           router.replace('/profile');
-          Alert.alert('Success', `User with the name ${form.fullName} and username ${form.username} added to DB!`);
+          Alert.alert('Success', `Your information has been updated!`);
         } catch (error) {
-          Alert.alert('Error', 'There was an error creating your account. Please try again.');
+          Alert.alert('Error', 'There was an error updating your profile. Please try again.');
           console.error(error);
         } finally {
           setIsSubmitting(false);

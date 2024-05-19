@@ -1,7 +1,7 @@
 import React, { useState,  useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from 'expo-router';
+import { useNavigation, router } from 'expo-router';
 import { icons } from '../constants';
 import FormField from '../components/FormField';
 import CustomButton from '../components/CustomButton';
@@ -79,7 +79,10 @@ const AddRoutine = () => {
       console.log(workout);
       const response = await axios.post(`http://localhost:5050/workouts/`, workout);
       console.log(response.data);
+      router.replace('/home');
+      Alert.alert('Success', `A new routine has been created!`);
     } catch (error) {
+      Alert.alert('Error', 'There was an error updating your profile. Please try again.');
       console.error(error);
     } finally {
       setIsSubmitting(false);
