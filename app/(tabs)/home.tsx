@@ -44,7 +44,7 @@ const Home = () => {
       }
     };
     fetchFullName();
-  }, []);
+  });
 
   useEffect(() => {
     const fetchWorkouts = async () => {
