@@ -9,7 +9,6 @@ A fitness routine tracking and checklist app. Features the ability to
 - Sophia Wu
 - Jacob Cole
 - Allen Cao
-- Jonathan Nguyen
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/yOTtMTPUgYg/0.jpg)](https://www.youtube.com/watch?v=yOTtMTPUgYg)  </br>
 https://devpost.com/software/spartatrack
