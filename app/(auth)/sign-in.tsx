@@ -51,7 +51,7 @@ const SignIn = () => {
               tintColor={'#416E97'}
               style={styles.logoIcon}
           />
-          <Text style={styles.header}>Log in to FitnessApp</Text>
+          <Text style={styles.header}>Log in to SpartaTrack</Text>
           <Text style={styles.subheader}>Welcome back!</Text>
 
           <View>

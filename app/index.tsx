@@ -20,12 +20,11 @@ export default function App() {
                                 style={styles.image}
                                 resizeMode='contain'
                             />
-                            <Text style={styles.title}>FITNESSAPP</Text>
+                            <Text style={styles.title}><Text style={styles.upper}>S</Text>PARTA<Text style={styles.upper}>T</Text>RACK</Text>
                         </View>
                         <View style={styles.bottomArea}>
-                            <Text style={styles.title}>Welcome to FitnessApp!</Text>
+                            <Text style={styles.title}>Welcome to SpartaTrack!</Text>
                             <Text style={styles.bottomText}>Unlock Your Potential</Text>
-                            <Text style={styles.bottomText}>Track and Train with FitnessApp</Text>
                             <CustomButton
                                 title="Get Started"
                                 handlePress={() => router.push('/sign-up')}
@@ -77,8 +76,11 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 32,
         fontWeight: 'bold',
-        lineHeight: 32,
+        lineHeight: 44,
         color: 'white',
+    },
+    upper: {
+        fontSize: 44,
     },
     bottomArea: {
         alignItems: 'center',
