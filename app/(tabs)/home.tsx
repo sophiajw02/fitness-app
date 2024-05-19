@@ -1,19 +1,13 @@
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { icons } from '../../constants';
-<<<<<<< Updated upstream
-import { useNavigation } from 'expo-router';
 import RoutineCard from '../../components/RoutineCard';
-import React from 'react';
-=======
 import { Link, router, useNavigation } from 'expo-router';
-import RoutineCard from '@/components/RoutineCard';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 
 
->>>>>>> Stashed changes
 
 const Home = () => {
   const navigation = useNavigation();
