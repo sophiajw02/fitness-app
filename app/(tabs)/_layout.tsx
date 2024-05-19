@@ -1,9 +1,7 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
-import { Tabs, Redirect } from 'expo-router'
+import { View, Image, StyleSheet } from 'react-native'
+import { Tabs, Redirect, Stack } from 'expo-router'
 import { icons } from '../../constants';
-import React from 'react'
-
-
+import React from 'react';
 
 const TabIcon = ({ icon, color }) => {
   return (

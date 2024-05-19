@@ -1,12 +1,20 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import React from 'react';
 
 const Profile = () => {
   return (
-    <View>
+    <SafeAreaView style={styles.mainContainer}>
       <Text>Profile</Text>
-    </View>
+    </SafeAreaView>
   )
 }
 
-export default Profile
+export default Profile;
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: 'white',
+    height: '100%',
+  },
+});
