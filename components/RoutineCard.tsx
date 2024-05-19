@@ -5,7 +5,7 @@ import Collapsible from 'react-native-collapsible';
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 
-const RoutineCard = ({ title, reps, sets, weight, containerStyle, id, onDelete }) => {
+const RoutineCard = ({ title, exercises, containerStyle, id, onDelete }) => {
     const [complete, setComplete] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [deleteButtonVisible, setDeleteButtonVisible] = useState(false);
@@ -54,25 +54,28 @@ const RoutineCard = ({ title, reps, sets, weight, containerStyle, id, onDelete }
             </TouchableOpacity>
             <Collapsible collapsed={isCollapsed} style={styles.collapsible}>
                 <View style={styles.cardContainer}>
-                    <TouchableOpacity
-                        onPress={() => setComplete(!complete)}
-                    >
-                        <Image source={!complete ? icons.radioUnchecked : icons.radioChecked}
-                            tintColor={!complete ? '#EAEAEA' : '#2B993C'}
-                            resizeMode='contain'
-                            style={styles.image}
-                        />
-                    </TouchableOpacity>
-                    <View style={styles.routineContext}>
-                        <Text style={styles.heading}>Exercise: {title}</Text>
-                        <View style={styles.routineReps}>
-                            <Text style={styles.paragraph}>X Reps</Text>
-                            <Text style={styles.divider}>|</Text>
-                            <Text style={styles.paragraph}>X Sets</Text>
-                            <Text style={styles.divider}>|</Text>
-                            <Text style={styles.paragraph}>X Pounds</Text>
-                        </View>
-                    </View>
+                    {exercises.map((exercise, index) => (
+                        <TouchableOpacity
+                            key={index}
+                            onPress={() => setComplete(!complete)}
+                        >
+                            <Image source={!complete ? icons.radioUnchecked : icons.radioChecked}
+                                tintColor={!complete ? '#EAEAEA' : '#2B993C'}
+                                resizeMode='contain'
+                                style={styles.image}
+                            />
+                            <View style={styles.routineContext}>
+                                <Text style={styles.heading}>Exercise: {exercise.name}</Text>
+                                <View style={styles.routineReps}>
+                                    <Text style={styles.paragraph}>{exercise.reps} Reps</Text>
+                                    <Text style={styles.divider}>|</Text>
+                                    <Text style={styles.paragraph}>{exercise.sets} Sets</Text>
+                                    <Text style={styles.divider}>|</Text>
+                                    <Text style={styles.paragraph}>{exercise.weight} Pounds</Text>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    ))}
                 </View>
             </Collapsible>
         </View>
@@ -129,12 +132,12 @@ const styles = StyleSheet.create({
         fontSize: 18,
         lineHeight: 32,
         fontWeight: '600',
-      },
+    },
     paragraph: {
-      fontSize: 14,
-      lineHeight: 20,
-      fontWeight: '400',
-      marginRight: 5,
+        fontSize: 14,
+        lineHeight: 20,
+        fontWeight: '400',
+        marginRight: 5,
     },
     divider: {
         fontSize: 14,
@@ -145,12 +148,12 @@ const styles = StyleSheet.create({
     exerciseContainer: {
         paddingVertical: 4,
         paddingHorizontal: 16,
-      },
+    },
     collapseButtonText: {
-      color: 'white',
-      fontSize: 20,
-      lineHeight: 32,
-      fontWeight: '600',
+        color: 'white',
+        fontSize: 20,
+        lineHeight: 32,
+        fontWeight: '600',
     },
     toggleArrow: {
         width: 32,
@@ -168,4 +171,4 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '600',
     },
-})
+});

@@ -10,12 +10,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 const Home = () => {
-  const navigation = useNavigation();
   const [workouts, setWorkouts] = useState([]);
-  const route = useRoute();
-  const { username } = route.params;
-
-  console.log('Username:', username);
+  const username = "ac123"
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -25,12 +21,11 @@ const Home = () => {
         console.log('Successfully fetched workouts:', workouts);
       } catch (error) {
         console.error('Error fetching workouts:', error);
-      } finally {
       }
     };
-
+  
     fetchWorkouts();
-  }, []);
+  }, []); 
 
   const [routines, setRoutines] = useState([
     { id: 1, title: 'Routine 1' },
@@ -62,11 +57,12 @@ const Home = () => {
         </View>
       <FlatList
         contentContainerStyle={styles.contentContainer}
-        data={[{ id:'Monday' }, { id:'Tuesday' }, { id:'Wednesday' }, { id:'Thursday' }, { id:'Friday' }, { id:'Saturday' }]}
-        keyExtractor={(item) => item.id.toString()}
+        data={workouts}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <RoutineCard title={item.id}
-            onDelete={handleDeleteRoutine}/>
+          <RoutineCard title={item.workoutName}
+            exercises={item.exercises}
+          onDelete={handleDeleteRoutine}/>
         )}
 
       />
