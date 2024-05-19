@@ -7,13 +7,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
   const [workouts, setWorkouts] = useState([]);
-  const username = "ac123"
+  const [userId, setUserId] = useState(null);
 
-  useEffect(() => {
+  // useEffect(() => {
     const fetchWorkouts = async () => {
       try {
         const response = await axios.get(`http://localhost:5050/workouts/${username}`);
@@ -21,11 +21,38 @@ const Home = () => {
         console.log('Successfully fetched workouts:', workouts);
       } catch (error) {
         console.error('Error fetching workouts:', error);
+      } finally {
+      }
+    };
+
+  //   fetchWorkouts();
+  // }, []);
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem('userId');
+        if (storedUserId !== null) {
+          setUserId(storedUserId);
+        }
+        console.log('Stored userId:', storedUserId);
+      } catch (error) {
+        console.error('Error fetching userId:', error);
+      }
+    };
+
+    const fetchWorkouts = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5050/workouts/ac123`);
+        setWorkouts(response.data);
+        console.log('Successfully fetched workouts:', response.data);
+      } catch (error) {
+        console.error('Error fetching workouts:', error);
       }
     };
   
-    fetchWorkouts();
-  }, []); 
+    fetchUserId();
+  }, []);
 
   const [routines, setRoutines] = useState([
     { id: 1, title: 'Routine 1' },
@@ -43,7 +70,7 @@ const Home = () => {
         <View style={styles.header}>
           <View>
             <Text style={styles.paragraph}>Welcome Back</Text>
-            <Text style={styles.heading}>User's Name</Text>
+            <Text style={styles.heading}>{userId}</Text>
           </View>
           <View>
             <TouchableOpacity onPress={() => navigation.navigate('add-routine')}>
