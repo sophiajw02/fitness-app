@@ -2,8 +2,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from 'expo-router';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { icons }  from '../../constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Profile = () => {
   const navigation = useNavigation();
@@ -15,6 +17,11 @@ const Profile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        const userId = await AsyncStorage.getItem('userId');
+        const userDetails = await axios.get(`http://localhost:5050/users/${userId}`);
+        await AsyncStorage.setItem('email', userDetails.data.email);
+        await AsyncStorage.setItem('username', userDetails.data.username);
+        await AsyncStorage.setItem('fullName', userDetails.data.fullName);
         const storedEmail = await AsyncStorage.getItem('email');
         if (storedEmail !== null) {
           setEmail(storedEmail);
@@ -36,7 +43,8 @@ const Profile = () => {
     };
 
     fetchUser();
-  }, []);
+  });
+  
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.circle} />
