@@ -33,7 +33,7 @@ const SignIn = () => {
     } finally {
       setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <SafeAreaView style={styles.mainContainer}>
