@@ -24,8 +24,9 @@ const SignIn = () => {
     setIsSubmitting(true);
 
     try {
-      // const response = await axios.post('http://localhost:5050/users/logins', form);
+      const response = await axios.post('http://localhost:5050/users/login', form);
       router.replace('/home');
+      Alert.alert('Success', `User with the name ${form.fullName} and username ${form.username} added to DB!`);
     } catch (error) {
       Alert.alert('Error', error.message);
       console.error(error);
