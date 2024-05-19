@@ -7,6 +7,7 @@ import { icons } from '../../constants';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton';
 
+
 const SignIn = () => {
   const [form, setForm] = useState({
     username: '',
@@ -14,6 +15,7 @@ const SignIn = () => {
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const submitForm = async () => {
     if (!form.username || !form.password) {
@@ -24,8 +26,13 @@ const SignIn = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post('http://localhost:5050/users/login', form);
+<<<<<<< Updated upstream
+      //const response = await axios.post('http://localhost:5050/users/login', form);
       router.replace('/home');
+=======
+      const response = await axios.post('http://localhost:5050/users/login', form);
+      router.replace(`/home?username=${form.username}`);
+>>>>>>> Stashed changes
       Alert.alert('Success', `User with the name ${form.fullName} and username ${form.username} added to DB!`);
     } catch (error) {
       Alert.alert('Error', error.message);
