@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   scrollContainer: {
-    paddingBottom: 100, 
+    paddingBottom: 100,
   },
   image: {
     width: 32,

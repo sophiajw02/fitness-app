@@ -25,7 +25,7 @@ const TabsLayout = () => {
           tabBarActiveTintColor: "#2D95F3",
           tabBarInactiveTintColor: "#929292",
           tabBarStyle: {
-            backgroundColor: "#fff",
+            backgroundColor: "#FFF",
             borderTopWidth: 1,
             borderTopColor: "#EDEFEE",
             height: 84,
@@ -40,19 +40,6 @@ const TabsLayout = () => {
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
                 icon={icons.home}
-                color={color}
-              />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="feed"
-          options={{
-            title: "Feed",
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={icons.feed}
                 color={color}
               />
             ),
@@ -85,7 +72,7 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   tabIcon: {
-    width: 24,
-    height: 24,
+    width: 32,
+    height: 32,
   }
 });

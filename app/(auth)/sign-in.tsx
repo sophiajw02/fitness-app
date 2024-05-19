@@ -26,13 +26,8 @@ const SignIn = () => {
     setIsSubmitting(true);
 
     try {
-<<<<<<< Updated upstream
-      //const response = await axios.post('http://localhost:5050/users/login', form);
-      router.replace('/home');
-=======
       const response = await axios.post('http://localhost:5050/users/login', form);
       router.replace(`/home?username=${form.username}`);
->>>>>>> Stashed changes
       Alert.alert('Success', `User with the name ${form.fullName} and username ${form.username} added to DB!`);
     } catch (error) {
       Alert.alert('Error', error.message);

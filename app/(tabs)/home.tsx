@@ -1,19 +1,13 @@
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { icons } from '../../constants';
-<<<<<<< Updated upstream
-import { useNavigation } from 'expo-router';
 import RoutineCard from '../../components/RoutineCard';
-import React from 'react';
-=======
 import { Link, router, useNavigation } from 'expo-router';
-import RoutineCard from '@/components/RoutineCard';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-
->>>>>>> Stashed changes
 
 const Home = () => {
   const navigation = useNavigation();
@@ -38,35 +32,46 @@ const Home = () => {
     fetchWorkouts();
   }, []);
 
+  const [routines, setRoutines] = useState([
+    { id: 1, title: 'Routine 1' },
+    { id: 2, title: 'Routine 2' },
+    { id: 3, title: 'Routine 3' },
+  ]);
+
+  const handleDeleteRoutine = (id) => {
+    setRoutines(routines.filter((routine) => routine.id !== id));
+  };
+
   return (
+    <GestureHandlerRootView>
     <SafeAreaView style={styles.mainContainer}>
+        <View style={styles.header}>
+          <View>
+            <Text style={styles.paragraph}>Welcome Back</Text>
+            <Text style={styles.heading}>User's Name</Text>
+          </View>
+          <View>
+            <TouchableOpacity onPress={() => navigation.navigate('add-routine')}>
+              <Image source={icons.addCircle}
+                style={styles.image}
+                tintColor={'#667185'}
+                resizeMode='contain'
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
       <FlatList
-        data={[{ id:1 }, { id:2 }, { id:3 }]}
+        contentContainerStyle={styles.contentContainer}
+        data={[{ id:'Monday' }, { id:'Tuesday' }, { id:'Wednesday' }, { id:'Thursday' }, { id:'Friday' }, { id:'Saturday' }]}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <RoutineCard title={item.id}/>
+          <RoutineCard title={item.id}
+            onDelete={handleDeleteRoutine}/>
         )}
-        ListHeaderComponent={() => (
-          <View style={styles.homeContainer}>
-            <View style={styles.header}>
-              <View>
-                <Text style={styles.paragraph}>Welcome Back</Text>
-                <Text style={styles.heading}>User's Name</Text>
-              </View>
-              <View>
-                <TouchableOpacity onPress={() => navigation.navigate('add-routine')}>
-                  <Image source={icons.addCircle}
-                    style={styles.image}
-                    tintColor={'#667185'}
-                    resizeMode='contain'
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        )}
+
       />
     </SafeAreaView>
+    </GestureHandlerRootView>
   )
 }
 
@@ -74,12 +79,11 @@ export default Home;
 
 const styles = StyleSheet.create({
   mainContainer: {
+    flex: 1,
     backgroundColor: 'white',
-    height: '100%',
-    paddingHorizontal: 24,
   },
-  homeContainer: {
-    display: 'flex',
+  contentContainer: {
+    paddingHorizontal: 0,
   },
   header: {
     display: 'flex',
@@ -87,6 +91,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 24,
+    paddingHorizontal: 24,
   },
   image: {
     width: 32,
