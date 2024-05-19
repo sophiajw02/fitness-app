@@ -30,7 +30,7 @@ const SignIn = () => {
       router.replace('/home');
       Alert.alert('Success', `User with the name ${form.fullName} and username ${form.username} added to DB!`);
     } catch (error) {
-      Alert.alert('Error', error.message);
+      Alert.alert('Error', 'There was an error creating your account. Please try again.');
       console.error(error);
     } finally {
       setIsSubmitting(false);
@@ -74,7 +74,7 @@ const SignIn = () => {
               value={form.password}
               handleChangeText={(e) => setForm({...form, password: e})}
               otherStyles={{marginVertical: 8}}
-              keyboarType="password"
+              keyboardType="password"
             />
           </View>
 
