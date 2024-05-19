@@ -28,8 +28,8 @@ const SignIn = () => {
 
     try {
       const response = await axios.post('http://localhost:5050/users/', form);
-      router.replace('/home');
-      Alert.alert('Success', `User with the name ${form.fullName} and username ${form.username} added to DB!`);
+      Alert.alert('Success', `Your account has been created, ${form.fullName}! Please log in to continue.`);
+      router.replace('/sign-in');
     } catch (error) {
       Alert.alert('Error', 'There was an error creating your account. Please try again.');
       console.error(error);
