@@ -1,13 +1,13 @@
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { icons } from '../../constants';
 import RoutineCard from '../../components/RoutineCard';
-import { 
-  useNavigation } from 'expo-router';
+import { useNavigation } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 
 const Home = () => {
   const navigation = useNavigation();
@@ -19,21 +19,39 @@ const Home = () => {
     const fetchUserId = async () => {
       try {
         const storedUserId = await AsyncStorage.getItem('userId');
-        const storedFullName = await AsyncStorage.getItem('fullName');
-        if (storedUserId !== null && storedUserId !== null) {
+        if (storedUserId !== null) {
           setUserId(storedUserId);
-          setFullName(storedFullName);
         }
         console.log('Stored userId:', storedUserId);
-        console.log('Stored name:', storedFullName);
       } catch (error) {
         console.error('Error fetching userId:', error);
       }
     };
 
-    const fetchWorkouts = async () => {
+    fetchUserId();
+  }, []);
+
+  useEffect(() => {
+    const fetchFullName = async () => {
       try {
-        const response = await axios.get(`http://localhost:5050/workouts/123`);
+        const storedFullName = await AsyncStorage.getItem('fullName');
+        if (storedFullName !== null) {
+          setFullName(storedFullName);
+        }
+        console.log('Stored full name:', storedFullName);
+      } catch (error) {
+        console.error('Error fetching username:', error);
+      }
+    };
+    fetchFullName();
+  }, []);
+
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      if (!userId) return;
+      try {
+        console.log('Fetching workouts for userId:', userId);
+        const response = await axios.get(`http://localhost:5050/workouts/${userId}`);
         setWorkouts(response.data);
         console.log('Successfully fetched workouts:', response.data);
       } catch (error) {
@@ -41,15 +59,8 @@ const Home = () => {
       }
     };
 
-    fetchUserId();
     fetchWorkouts();
-  }, []);
-
-  const [routines, setRoutines] = useState([
-    { id: 1, title: 'Routine 1' },
-    { id: 2, title: 'Routine 2' },
-    { id: 3, title: 'Routine 3' },
-  ]);
+  }, [userId]);
 
   const handleDeleteRoutine = (id) => {
     setRoutines(routines.filter((routine) => routine.id !== id));
@@ -57,7 +68,7 @@ const Home = () => {
 
   return (
     <GestureHandlerRootView>
-    <SafeAreaView style={styles.mainContainer}>
+      <SafeAreaView style={styles.mainContainer}>
         <View style={styles.header}>
           <View>
             <Text style={styles.paragraph}>Welcome Back</Text>
@@ -86,8 +97,8 @@ const Home = () => {
       />
     </SafeAreaView>
     </GestureHandlerRootView>
-  )
-}
+  );
+};
 
 export default Home;
 

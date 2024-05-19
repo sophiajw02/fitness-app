@@ -1,3 +1,4 @@
+import React, { useState,  useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from 'expo-router';
@@ -5,18 +6,84 @@ import { icons } from '../constants';
 import FormField from '../components/FormField';
 import CustomButton from '../components/CustomButton';
 import ExerciseForm from '../components/ExerciseForm';
-import React, { useState } from 'react';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const AddRoutine = () => {
   const navigation = useNavigation();
+  const [userId, setUserId] = useState(null);
+  const [username, setUsername] = useState(null);
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem('userId');
+        if (storedUserId !== null) {
+          setUserId(storedUserId);
+        }
+        console.log('Stored userId:', storedUserId);
+      } catch (error) {
+        console.error('Error fetching userId:', error);
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
+  useEffect(() => {
+    const fetchUsername = async () => {
+      try {
+        const storedUsername = await AsyncStorage.getItem('username');
+        if (storedUsername !== null) {
+          setUsername(storedUsername);
+        }
+        console.log('Stored username:', storedUsername);
+      } catch (error) {
+        console.error('Error fetching username:', error);
+      }
+    };
+    fetchUsername();
+  }, []);
+  
   const [form, setForm] = useState({
     routineName: '',
-  })
+  });
+
+  const [exerciseData, setExerciseData] = useState([
+    { name: '', sets: '', repetitions: '', weight: '' },
+    { name: '', sets: '', repetitions: '', weight: '' },
+    { name: '', sets: '', repetitions: '', weight: '' },
+    { name: '', sets: '', repetitions: '', weight: '' },
+    { name: '', sets: '', repetitions: '', weight: '' }
+  ]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submitForm = async () => {
+    const workout = {
+      workoutName: form.routineName,
+      username: username,
+      userid: userId,
+      exercises: exerciseData.map(ex => ({
+        name: ex.name,
+        sets: parseInt(ex.sets),
+        repetitions: parseInt(ex.repetitions),
+        weight: parseInt(ex.weight)
+      }))
+    };
 
+    setIsSubmitting(true);
+
+    try {
+      console.log(workout);
+      const response = await axios.post(`http://localhost:5050/workouts/`, workout);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -38,16 +105,19 @@ const AddRoutine = () => {
           <FormField
             title="Routine Name"
             value={form.routineName}
-            handleChangeText={(e) => setForm({...form, routineName: e})}
-            otherStyles={{marginVertical: 8}}
+            handleChangeText={(e) => setForm({ ...form, routineName: e })}
+            otherStyles={{ marginVertical: 8 }}
           />
         </View>
 
-        <ExerciseForm />
-        <ExerciseForm />
-        <ExerciseForm />
-        <ExerciseForm />
-        <ExerciseForm />
+        {exerciseData.map((exercise, index) => (
+          <ExerciseForm
+            key={index}
+            exerciseData={exerciseData}
+            setExerciseData={setExerciseData}
+            index={index}
+          />
+        ))}
       </ScrollView>
 
       <CustomButton
